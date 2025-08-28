@@ -11,6 +11,7 @@ services:
       - TZ=America/Guayaquil
     volumes:
       - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock  # acceso al daemon Docker del host
 
 volumes:
   jenkins_home:
