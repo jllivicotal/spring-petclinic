@@ -1,31 +1,18 @@
 pipeline {
-  agent none
-  stages {
-    stage('Maven Install') {
-      agent {
-        docker {
-          image 'maven:3.9.8-eclipse-temurin-17'
-          args "-v $WORKSPACE/.m2:/root/.m2"
-          reuseNode true
-        }
-      }
-      steps {
-        sh 'mvn -v'
-        sh 'mvn -B -DskipTests clean package'
-      }
+    agent any
+    tools {
+        maven 'Maven3'
     }
-
-    stage('Docker Build') {
-      agent {
-        docker {
-          image 'docker:27-cli'
-          args "-v /var/run/docker.sock:/var/run/docker.sock"
-          reuseNode true
+    stages {
+        stage('Maven Install') {
+            steps {
+                sh 'mvn clean install'
+            }
         }
-      }
-      steps {
-        sh 'docker build -t grupo05/spring-petclinic:latest .'
-      }
+        stage('Docker Build') {
+            steps {
+                sh 'docker build -t grupo02/spring-petclinic:latest .'
+            }
+        }
     }
-  }
 }
