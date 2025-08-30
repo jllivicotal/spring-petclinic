@@ -1,4 +1,9 @@
-FROM chrismerchan/alpine-java
-LABEL maintainer="jllivicota@est.ups.edu.ec"
-COPY /target/spring-petclinic-2.3.0.BUILD-SNAPSHOT.jar /home/springpetclinic-2.3.0.jar
-CMD ["java","-jar","/home/spring-petclinic-2.3.0.jar"]
+FROM maven:3.9.8-eclipse-temurin-17 AS build
+WORKDIR /src
+COPY . .
+RUN mvn -B -DskipTests clean package
+
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+COPY --from=build /src/target/*SNAPSHOT.jar /app/app.jar
+ENTRYPOINT ["java","-jar","/app/app.jar"]
