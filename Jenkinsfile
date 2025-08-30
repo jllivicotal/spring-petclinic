@@ -11,7 +11,7 @@ pipeline {
         }
         stage('Docker Build') {
             steps {
-                sh 'docker build -t grupo02/spring-petclinic:latest .'
+                sh 'docker build -t grupo05/spring-petclinic:latest .'
             }
         }
     }
