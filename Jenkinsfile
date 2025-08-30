@@ -5,7 +5,8 @@ pipeline {
       agent {
         docker {
           image 'maven:3.9.8-eclipse-temurin-17'
-          args  '-v /var/jenkins_home:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock'
+          args "-v $WORKSPACE/.m2:/root/.m2"
+          reuseNode true
         }
       }
       steps {
@@ -17,8 +18,9 @@ pipeline {
     stage('Docker Build') {
       agent {
         docker {
-          image 'docker:27.2-cli'
-          args  '-v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/work -w /work'
+          image 'docker:27-cli'
+          args "-v /var/run/docker.sock:/var/run/docker.sock"
+          reuseNode true
         }
       }
       steps {
